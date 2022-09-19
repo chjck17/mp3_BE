@@ -1,9 +1,9 @@
-import { Body, Req,Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import AlbumsService from './album.service';
 import CreateAlbumDto from './dto/createAlbum.dto';
 import UpdateAlbumDto from './dto/updateAlbum.dto';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
-import RequestWithUser from './requestWithUser.interface';
+
 
 @Controller('album')
 export default class AlbumsController {

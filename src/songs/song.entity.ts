@@ -1,21 +1,18 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-class User {
+class Song {
   @PrimaryGeneratedColumn()
   public id?: number;
-
-  @Column({ unique: true })
-  public email: string;
-
-  @Column()
-  public name: string;
   
   @Column()
-  public role: string;
+  public name: string;
 
   @Column()
-  public password: string;
+  public author: string;
+
+  @Column()
+  public link: string;
 }
 
-export default User;
+export default Song;
