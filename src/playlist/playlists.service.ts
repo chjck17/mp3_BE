@@ -66,6 +66,6 @@ export default class PlaylistsService {
     const deleteResponse = await this.playlistsRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('Playlist not found', HttpStatus.NOT_FOUND);
-    }
-  }
+        }
+      }
 }

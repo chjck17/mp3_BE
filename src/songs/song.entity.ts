@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// import Test from 'src/test/test.entity';
 
 @Entity()
 class Song {
@@ -13,6 +14,11 @@ class Song {
 
   @Column()
   public link: string;
+  
+  // @ManyToOne(type => Test, test => test.id)
+  // items: Test
+
+  
 }
 
 export default Song;

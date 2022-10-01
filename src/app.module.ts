@@ -10,12 +10,12 @@ import { SongModule } from './songs/songs.module';
 // import { PlaylistModule } from './userplaylist/userplaylists.module';
 import { PlaylistModule } from './playlist/playlists.module';
 import { UserPlaylistModule } from './userplaylist/userplaylists.module';
+import { TestModule } from './test/tests.module';
 @Module({
   imports: [
     PostsModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
-        // POSTGRES_URI: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),
@@ -34,6 +34,7 @@ import { UserPlaylistModule } from './userplaylist/userplaylists.module';
     UserPlaylistModule,
     AlbumModule,
     SongModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],
