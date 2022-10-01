@@ -6,7 +6,11 @@ import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { UsersModule } from './users/users.module';
 import { AlbumModule } from './album/album.module';
-
+import { SongModule } from './songs/songs.module';
+// import { PlaylistModule } from './userplaylist/userplaylists.module';
+import { PlaylistModule } from './playlist/playlists.module';
+import { UserPlaylistModule } from './userplaylist/userplaylists.module';
+import { TestModule } from './test/tests.module';
 @Module({
   imports: [
     PostsModule,
@@ -26,7 +30,11 @@ import { AlbumModule } from './album/album.module';
     DatabaseModule,
     AuthenticationModule,
     UsersModule,
+    PlaylistModule,
+    UserPlaylistModule,
     AlbumModule,
+    SongModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],

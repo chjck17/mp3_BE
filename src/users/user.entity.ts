@@ -10,6 +10,9 @@ class User {
 
   @Column()
   public name: string;
+  
+  @Column()
+  public role: string;
 
   @Column()
   public password: string;
