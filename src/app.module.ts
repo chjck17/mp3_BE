@@ -25,7 +25,7 @@ import { TestModule } from './test/tests.module';
         JWT_EXPIRATION_TIME: Joi.string().required(),
         PORT: Joi.number(),
         synchronize: Joi.bool(),
-      })
+      }),
     }),
     DatabaseModule,
     AuthenticationModule,
