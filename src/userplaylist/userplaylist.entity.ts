@@ -1,16 +1,24 @@
-import { Column,ManyToOne, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import Test from 'src/test/test.entity';
-
+import { Column,ManyToOne, Entity, PrimaryGeneratedColumn ,ManyToMany,JoinTable} from 'typeorm';
+import User from 'src/users/user.entity';
+import Song from 'src/songs/song.entity';
 @Entity()
 class UserPlaylist {
   @PrimaryGeneratedColumn()
   public id?: number;
   @Column()
-  public playlistId: number;
+  public name: string;
   @Column()
-  public userId: number;
-  @ManyToOne(type => Test, test => test.items)
-  items: Test
+  public state: boolean;
+  @ManyToOne(() => User, (user: User) => user.userPlaylist)
+  public user: User;
+
+  @ManyToMany(()=> Song ,{
+        cascade: true,
+        eager:true
+    })
+  @JoinTable()
+  public listSong:Song[]
+
 
 }
 
