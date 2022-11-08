@@ -4,16 +4,18 @@ import CreateAlbumDto from './dto/createAlbum.dto';
 import UpdateAlbumDto from './dto/updateAlbum.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository,getRepository } from 'typeorm';
+import SongsService from 'src/songs/songs.service';
 @Injectable()
 export default class AlbumsService {
   constructor(
     @InjectRepository(Album)
-    private albumRepository: Repository<Album>
+    private albumRepository: Repository<Album>,
+    private songsService: SongsService
     
   ) {}
 
   getAllAlbums() {
-    return this.albumRepository.find();
+    return this.albumRepository.find({relations:['listSong']});
   }
 
   async getAlbumById(id: number) {
@@ -24,15 +26,23 @@ export default class AlbumsService {
     throw new HttpException('Albums not found', HttpStatus.NOT_FOUND);
   }
   
-  async getAlbumOfUser(idUser: number) {
-
-      const user = await getRepository(Album) 
-      .createQueryBuilder("user") 
-      .where("user.idUser = :id", { id: idUser }) 
-      .getMany();
-    return  user;
-
-  }
+  async addSongToAlbum(id: number ,iduserPlaylist:number) {
+      const album = new Album()
+      const song= await this.songsService.getSongById(id)
+      const playlis = await this.albumRepository.findOne(iduserPlaylist)
+      album.listSong =[] 
+      if(album.listSong){
+      for (let i = 0; i < playlis.listSong.length; i++) {          
+            album.listSong.push(playlis.listSong[i]);
+          }
+      }
+      album.listSong.push(song)
+      album.id=playlis.id
+      album.name=playlis.name
+      album.state=playlis.state
+      album.description=playlis.description
+     return this.albumRepository.save(album);
+    }
 
 
   async createAlbum(album: CreateAlbumDto) {

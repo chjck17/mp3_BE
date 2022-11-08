@@ -10,26 +10,22 @@ export default class AlbumsController {
   constructor(
     private readonly albumService: AlbumsService
   ) {}
-
   @Get()
   @UseGuards(JwtAuthenticationGuard)
   getAllAlbums() {
     return this.albumService.getAllAlbums();
   }
-
   @Get(':id')
   getAlbumById(@Param('id') id: string) {
     return this.albumService.getAlbumById(Number(id));
   }
-  @Get('/user/:id')
+  @Post('addSongToAlbum/:id/:idAlbum')
   @UseGuards(JwtAuthenticationGuard)
-  getAlbumOfUser(@Param('id') id: string) {
-    // const {user} = request;
-    return this.albumService.getAlbumOfUser(Number(id));
-    // return user;
+  async addSongToAlbum(@Param('id') id : string,@Param('idAlbum') idAlbum : string) {
+    return this.albumService.addSongToAlbum(Number(id),Number(idAlbum));
   }
 
-  @Post()
+  @Post('/createAlbum')
   @UseGuards(JwtAuthenticationGuard)
   async createAlbum(@Body() album: CreateAlbumDto) {
     return this.albumService.createAlbum(album);

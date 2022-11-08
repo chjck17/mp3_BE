@@ -9,6 +9,8 @@ import { AlbumModule } from './album/album.module';
 import { SongModule } from './songs/songs.module';
 import { UserPlaylistModule } from './userplaylist/userplaylists.module';
 import { CategoryModule } from './categories/categories.module';
+// import { LocalFilesModule } from './localFiles/localFiles.module';
+// import { RecentlyModule } from './recently/recently.module';
 @Module({
   imports: [
     PostsModule,
@@ -32,6 +34,8 @@ import { CategoryModule } from './categories/categories.module';
     UserPlaylistModule,
     AlbumModule,
     SongModule,
+    // LocalFilesModule,
+    // RecentlyModule,
   ],
   controllers: [],
   providers: [],

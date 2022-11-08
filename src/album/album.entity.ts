@@ -1,20 +1,21 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Column, Entity, PrimaryGeneratedColumn ,ManyToMany,JoinTable} from 'typeorm';
+import Song from 'src/songs/song.entity';
 @Entity()
 class Album {
   @PrimaryGeneratedColumn()
   public id?: number;
   @Column()
-  public idUser: number;
-  
-  @Column()
   public name: string;
-
   @Column()
-  public author: string;
-
+  public state: boolean;
+  @ManyToMany(()=> Song ,{
+        cascade: true,
+        eager:true
+    })
+  @JoinTable()
+  public listSong:Song[]
   @Column()
-  public link: string;
+  public description: string;
 }
 
 export default Album;

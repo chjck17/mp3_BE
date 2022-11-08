@@ -9,7 +9,9 @@ import { x } from '@hapi/joi';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
+
+
   ) {}
   async getByEmail(email: string) {
     const user = await this.usersRepository.findOne({ email });
@@ -34,5 +36,7 @@ export class UsersService {
     const newUser = await this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);
     return newUser;
+    
   }
+  
 }
