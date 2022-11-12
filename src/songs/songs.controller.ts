@@ -10,7 +10,7 @@ export default class SongsController {
     private readonly songsService: SongsService,
   ) {}
   @Get()
-  @UseGuards(JwtAuthenticationGuard)
+  // @UseGuards(JwtAuthenticationGuard)
   getAllSongs() {
     return this.songsService.getAllSongs();
   }
