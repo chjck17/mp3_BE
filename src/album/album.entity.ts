@@ -16,6 +16,8 @@ class Album {
   public listSong:Song[]
   @Column()
   public description: string;
+  @Column()
+  public image: string;
 }
 
 export default Album;
