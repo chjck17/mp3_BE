@@ -13,10 +13,12 @@ import RegisterDto from './dto/register.dto';
 import RequestWithUser from './requestWithUser.interface';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('authentication')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(private readonly authenticationService: AuthenticationService,
+     private readonly configService: ConfigService) {}
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
@@ -29,7 +31,8 @@ export class AuthenticationController {
   async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;
     const token = this.authenticationService.getCookieWithJwtToken(user.id);
-    response.setHeader('Set-Cookie', token);
+    const cookie = `Authentication=${token}; HttpOnly; Path=/;  Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')};`;
+    response.setHeader('Set-Cookie',cookie);
     delete user.password; 
     return response.send({
       user,
