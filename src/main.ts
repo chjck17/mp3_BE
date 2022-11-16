@@ -26,7 +26,7 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
   });
   app.use(cookieParser());
-  await app.listen(3000);
+  await app.listen(5000);
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());

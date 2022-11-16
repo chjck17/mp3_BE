@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn ,ManyToMany,JoinTable} from 'typ
 import Song from 'src/songs/song.entity';
 @Entity()
 class Album {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   public id?: number;
   @Column()
   public name: string;

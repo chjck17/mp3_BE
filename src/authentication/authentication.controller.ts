@@ -31,8 +31,6 @@ export class AuthenticationController {
   async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;
     const token = this.authenticationService.getCookieWithJwtToken(user.id);
-    const cookie = `Authentication=${token}; HttpOnly; Path=/;  Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')};`;
-    response.setHeader('Set-Cookie',cookie);
     delete user.password; 
     return response.send({
       user,

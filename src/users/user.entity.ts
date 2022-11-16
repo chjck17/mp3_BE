@@ -3,7 +3,7 @@ import UserPlaylist from 'src/userplaylist/userplaylist.entity';
 
 @Entity()
 class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   public id?: number;
 
   @Column({ unique: true })
