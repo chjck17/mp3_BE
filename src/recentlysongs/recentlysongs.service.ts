@@ -16,7 +16,7 @@ export default class RecentlySongsService {
     private songsService: SongsService,
   ) {}
 
-  async addSongToRecentlySongs(id: number ,user:User) {
+  async addSongToRecentlySongs(id: string ,user:User) {
     const album = new RecentlySong()
     const song= await this.songsService.getSongById(id)
 
@@ -44,7 +44,7 @@ async getAllSongs(user:User) {
        )
     return recentlysong;
   }
-  async deleteSong(id: number) {
+  async deleteSong(id: string) {
     const deleteResponse = await this.recentlySongsRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('Song not found', HttpStatus.NOT_FOUND);

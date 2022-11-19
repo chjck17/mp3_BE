@@ -23,7 +23,7 @@ export default class SongsService {
     return this.songsRepository.find({ relations: ['categories'] });
   }
 
-  async getSongById(id: number) {
+  async getSongById(id: string) {
     const song = await this.songsRepository.findOne(id);
     if (song) {
       return song;
@@ -41,7 +41,7 @@ export default class SongsService {
     throw new UnauthorizedException;
    //return song;
   }
-  async updateSong(id: number, song: UpdateSongDto,user:User) {
+  async updateSong(id: string, song: UpdateSongDto,user:User) {
     if(user.role== 'admin'){
     await this.songsRepository.update(id,song);
     const updatedSong = await this.songsRepository.findOne(id);
@@ -52,7 +52,7 @@ export default class SongsService {
   }
   throw new UnauthorizedException;
   }
-  async deleteSong(id: number) {
+  async deleteSong(id: string) {
 
     const deleteResponse = await this.songsRepository.delete(id);
     if (!deleteResponse.affected) {

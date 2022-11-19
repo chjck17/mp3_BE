@@ -10,12 +10,10 @@ export default class SongsController {
     private readonly songsService: SongsService,
   ) {}
   @Get()
-  // @UseGuards(JwtAuthenticationGuard)
   getAllSongs() {
     return this.songsService.getAllSongs();
   }
  @Get('/category')
-  @UseGuards(JwtAuthenticationGuard)
   getAllSongsWithCategory() {
     return this.songsService.getAllSongsWithCategory();
   }
@@ -23,7 +21,7 @@ export default class SongsController {
 
   @Get(':id')
   getSongById(@Param('id') id: string) {
-    return this.songsService.getSongById(Number(id));
+    return this.songsService.getSongById(id);
   }
   @UseGuards(JwtAuthenticationGuard)
   @Post()
@@ -32,10 +30,10 @@ export default class SongsController {
   }
   @Patch(':id')
   async updateSong(@Req() req:RequestWithUser,@Param('id') id: string, @Body() song: UpdateSongDto) {
-    return this.songsService.updateSong(Number(id), song,req.user);
+    return this.songsService.updateSong(id, song,req.user);
   }
   @Delete(':id')
   async deleteSong(@Param('id') id: string) {
-    return this.songsService.deleteSong(Number(id));
+    return this.songsService.deleteSong(id);
   }
 }

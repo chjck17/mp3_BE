@@ -14,11 +14,11 @@ export default class UserPlaylistsController {
     private readonly userPlaylistsService: UserPlaylistsService,
     private readonly usersService: UsersService,
   ) {}
-  @Get()
-  async GetAllUserPlayList( )
-  {
-    return this.userPlaylistsService.getAllUserPlaylists()
-  }
+  // @Get()
+  // async GetAllUserPlayList( )
+  // {
+  //   return this.userPlaylistsService.getAllUserPlaylists()
+  // }
   @Get('/getUserPlayList')
   @UseGuards(JwtAuthenticationGuard)
   getUserPlayList(@Req() req: RequestWithUser) {
@@ -26,7 +26,7 @@ export default class UserPlaylistsController {
   }
   @Post('addSongToUserPlayList/:id/:idplaylist')
   async addsongToUserPlayList(@Param('id') id : string,@Param('idplaylist') idplaylist : string) {
-     return this.userPlaylistsService.addSongToUserPlayList(Number(id),Number(idplaylist))
+     return this.userPlaylistsService.addSongToUserPlayList(id,idplaylist)
   }
   @Post('/getSongToUserPlayList')
   async getSongToUserPlayList() {

@@ -9,19 +9,17 @@ export default class CategoriesController {
   constructor(
     private readonly categoriesService: CategoriesService,
   ) {}
-  @UseGuards(JwtAuthenticationGuard)
   @Get()
   getAllCategories() {
     return this.categoriesService.getAllCategories();
   }
   @Get('/getById/:id')
-  @UseGuards(JwtAuthenticationGuard)
   getSongByCategory(@Param('id') id:string) {
-    return this.categoriesService.getSongByCategories(Number(id));
+    return this.categoriesService.getSongByCategories(id);
   }
   @Get(':id')
   getCategoryById(@Param('id') id: string) {
-    return this.categoriesService.getCategoryById(Number(id));
+    return this.categoriesService.getCategoryById(id);
   }
   @UseGuards(JwtAuthenticationGuard)
   @Post()
@@ -30,10 +28,10 @@ export default class CategoriesController {
   }
   @Patch(':id')
   async updateCategory(@Req() req:RequestWithUser,@Param('id') id: string, @Body() category: UpdateCategoryDto) {
-    return this.categoriesService.updateCategory(Number(id), category,req.user);
+    return this.categoriesService.updateCategory(id, category,req.user);
   }
   @Delete(':id')
   async deleteCategory(@Param('id') id: string) {
-    return this.categoriesService.deleteCategory(Number(id));
+    return this.categoriesService.deleteCategory(id);
   }
 }

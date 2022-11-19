@@ -1,5 +1,5 @@
 export class CreateAlbumDto {
-  idUser:number ;
+  idUser:string ;
   name: string;
   author: string;
   link:string;

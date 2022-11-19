@@ -25,7 +25,7 @@ export class UsersService {
     const UserPlayList = (await playList).filter(item=>item.id==id.id)
     return UserPlayList[0].userPlaylist;
   }
-  async getById(id: number) {
+  async getById(id: string) {
     const user = await this.usersRepository.findOne({ id });
     if (user) {
       return user;
@@ -56,7 +56,7 @@ export class UsersService {
     return newUser;
   }
 
-   async setCurrentRefreshToken(refreshToken: string, userId: number) {
+   async setCurrentRefreshToken(refreshToken: string, userId: string) {
     const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
     await this.usersRepository.update(userId, {
       currentHashedRefreshToken

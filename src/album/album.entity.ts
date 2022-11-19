@@ -3,7 +3,7 @@ import Song from 'src/songs/song.entity';
 @Entity()
 class Album {
   @PrimaryGeneratedColumn('uuid')
-  public id?: number;
+  public id?: string;
   @Column()
   public name: string;
   @Column()

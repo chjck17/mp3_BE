@@ -18,7 +18,7 @@ export default class AlbumsService {
     return this.albumRepository.find({relations:['listSong']});
   }
 
-  async getAlbumById(id: number) {
+  async getAlbumById(id: string) {
     const album = await this.albumRepository.findOne(id);
     if (album) {
       return album;
@@ -26,7 +26,7 @@ export default class AlbumsService {
     throw new HttpException('Albums not found', HttpStatus.NOT_FOUND);
   }
   
-  async addSongToAlbum(id: number ,iduserPlaylist:number) {
+  async addSongToAlbum(id: string ,iduserPlaylist:string) {
       const album = new Album()
       const song= await this.songsService.getSongById(id)
       const playlis = await this.albumRepository.findOne(iduserPlaylist)
@@ -51,7 +51,7 @@ export default class AlbumsService {
     return newAlbum;
   }
 
-  async updateAlbum(id: number, album: UpdateAlbumDto) {
+  async updateAlbum(id: string, album: UpdateAlbumDto) {
     await this.albumRepository.update(id,album);
     const updatedAlbum = await this.albumRepository.findOne(id);
     if (updatedAlbum) {
@@ -60,7 +60,7 @@ export default class AlbumsService {
     throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
   }
 
-  async deleteAlbum(id: number) {
+  async deleteAlbum(id: string) {
     const deleteResponse = await this.albumRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('Album not found', HttpStatus.NOT_FOUND);

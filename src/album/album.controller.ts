@@ -11,18 +11,18 @@ export default class AlbumsController {
     private readonly albumService: AlbumsService
   ) {}
   @Get()
-  @UseGuards(JwtAuthenticationGuard)
+  // @UseGuards(JwtAuthenticationGuard)
   getAllAlbums() {
     return this.albumService.getAllAlbums();
   }
   @Get(':id')
   getAlbumById(@Param('id') id: string) {
-    return this.albumService.getAlbumById(Number(id));
+    return this.albumService.getAlbumById(id);
   }
   @Post('addSongToAlbum/:id/:idAlbum')
   @UseGuards(JwtAuthenticationGuard)
   async addSongToAlbum(@Param('id') id : string,@Param('idAlbum') idAlbum : string) {
-    return this.albumService.addSongToAlbum(Number(id),Number(idAlbum));
+    return this.albumService.addSongToAlbum(id,idAlbum);
   }
 
   @Post('/createAlbum')
@@ -33,11 +33,11 @@ export default class AlbumsController {
 
   @Patch(':id')
   async updateAlbum(@Param('id') id: string, @Body() album: UpdateAlbumDto) {
-    return this.albumService.updateAlbum(Number(id), album);
+    return this.albumService.updateAlbum(id, album);
   }
 
   @Delete(':id')
   async deleteAlbum(@Param('id') id: string) {
-    return this.albumService.deleteAlbum(Number(id));
+    return this.albumService.deleteAlbum(id);
   }
 }
