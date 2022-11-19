@@ -23,8 +23,15 @@ export class GoogleAuthenticationController {
       user
     } = await this.googleAuthenticationService.authenticate(tokenData.token);
 
+
     request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
 
-    return user;
+    // return user;
+
+     return ({
+      user,
+      token: accessTokenCookie,
+      message: 'Login account success',
+    });
   }
 }

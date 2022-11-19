@@ -9,8 +9,7 @@ class RecentlySong {
   @ManyToMany(()=> Song ,{
         cascade: true,
         eager:true
-    })
-    
+    })  
   @JoinTable()
   public listSong:Song[]
   
