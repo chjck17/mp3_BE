@@ -11,7 +11,6 @@ class UserPlaylist {
   public state: boolean;
   @ManyToOne(() => User, (user: User) => user.userPlaylist)
   public user: User;
-
   @ManyToMany(()=> Song ,{
         cascade: true,
         eager:true

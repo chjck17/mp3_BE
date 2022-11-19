@@ -1,5 +1,6 @@
 
 import { IsEmail, IsString, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import RecentlySong from 'src/recentlysongs/recentlysong.entity';
 
 export class RegisterDto {
   @IsEmail()
@@ -16,6 +17,9 @@ export class RegisterDto {
   password: string;
   
   role:string;
+
+
+  recentlySongs:RecentlySong;
 }
 
 export default RegisterDto;

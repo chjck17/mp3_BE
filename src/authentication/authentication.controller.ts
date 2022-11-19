@@ -14,15 +14,24 @@ import RequestWithUser from './requestWithUser.interface';
 import { LocalAuthenticationGuard } from './localAuthentication.guard';
 import JwtAuthenticationGuard from './jwt-authentication.guard';
 import { ConfigService } from '@nestjs/config';
+import RecentlySongsService from 'src/recentlysongs/recentlysongs.service';
+import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmation.service';
 
 @Controller('authentication')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService,
-     private readonly configService: ConfigService) {}
+
+     private readonly configService: ConfigService,
+        private readonly emailConfirmationService: EmailConfirmationService
+      // private readonly recentlySongsService: RecentlySongsService
+     ) {}
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
-    return this.authenticationService.register(registrationData);
+    const user = this.authenticationService.register(registrationData);
+    const test = 'Duy'
+     await this.emailConfirmationService.sendVerificationLink(registrationData.email);
+     return test 
   }
 
   @HttpCode(200)

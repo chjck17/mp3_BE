@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
-import SongsController from './recentlysongs.controller';
-import SongsService from './recentlysongs.service';
-import Song from './recentlysong.entity';
-import UserPlaylistsService from 'src/userplaylist/userplaylists.service';
+import RecentlySongsService from './recentlysongs.service';
+
+import RecentlySong from './recentlysong.entity';
+import RecentlySongsController from './recentlysongs.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import UserPlaylist from 'src/userplaylist/userplaylist.entity';
-import Category from 'src/categories/category.entity';
+import Song from 'src/songs/song.entity';
+import User from 'src/users/user.entity';
+import { UsersService } from 'src/users/users.service';
+import SongsService from 'src/songs/songs.service';
+ 
 @Module({
-  imports: [TypeOrmModule.forFeature([Song,UserPlaylist,Category])],
-  controllers: [SongsController],
-  providers: [SongsService,UserPlaylistsService],
+  imports: [TypeOrmModule.forFeature([RecentlySong,User,Song])],
+  controllers: [RecentlySongsController],
+  providers: [SongsService,RecentlySongsService],
 })
-export class SongModule {}
+export class RecentlySongsModule {}

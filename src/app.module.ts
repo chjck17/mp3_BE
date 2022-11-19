@@ -9,8 +9,10 @@ import { AlbumModule } from './album/album.module';
 import { SongModule } from './songs/songs.module';
 import { UserPlaylistModule } from './userplaylist/userplaylists.module';
 import { CategoryModule } from './categories/categories.module';
-// import { LocalFilesModule } from './localFiles/localFiles.module';
-// import { RecentlyModule } from './recently/recently.module';
+import { RecentlySongsModule } from './recentlysongs/recentlysongs.module';
+import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
+import { EmailModule } from './email/email.module';
+import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthentication.module';
 @Module({
   imports: [
     PostsModule,
@@ -23,6 +25,16 @@ import { CategoryModule } from './categories/categories.module';
         POSTGRES_DB: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
+        GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
         PORT: Joi.number(),
         synchronize: Joi.bool(),
       }),
@@ -34,6 +46,11 @@ import { CategoryModule } from './categories/categories.module';
     UserPlaylistModule,
     AlbumModule,
     SongModule,
+    RecentlySongsModule,
+     EmailModule,
+    EmailConfirmationModule,
+    GoogleAuthenticationModule,
+   
     // LocalFilesModule,
     // RecentlyModule,
   ],

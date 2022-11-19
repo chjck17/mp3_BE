@@ -7,12 +7,19 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './jwt.strategy';
+import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmation.service';
+import EmailService from 'src/email/email.service';
+import { GoogleAuthenticationService } from 'src/googleAuthentication/googleAuthentication.service';
+import { UsersService } from 'src/users/users.service';
+import User from 'src/users/user.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     ConfigModule,
+    TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -24,7 +31,7 @@ import { JwtStrategy } from './jwt.strategy';
       }),
     }),
   ],
-  providers: [AuthenticationService, LocalStrategy, JwtStrategy],
+  providers: [AuthenticationService, LocalStrategy, JwtStrategy,EmailConfirmationService,EmailService,GoogleAuthenticationService,UsersService],
   controllers: [AuthenticationController]
 })
 export class AuthenticationModule {}

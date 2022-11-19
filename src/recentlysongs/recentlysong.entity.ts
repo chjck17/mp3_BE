@@ -1,18 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn,ManyToMany, ManyToOne,JoinTable } from 'typeorm';
-import Category from 'src/categories/category.entity';
+import { Column, Entity, PrimaryGeneratedColumn,ManyToMany, ManyToOne,JoinTable, OneToOne } from 'typeorm';
+import Song from 'src/songs/song.entity';
+import User from 'src/users/user.entity';
 @Entity()
 class RecentlySong {
+
   @PrimaryGeneratedColumn()
   public id?: number;
-  @Column()
-  public name: string;
-  @Column()
-  public author: string;
-  @Column()
-  public link: string;
 
-  @ManyToMany(()=> Category , (categories:Category)=>(categories.songs))
-  public categories:Category[]
+  @ManyToMany(()=> Song ,{
+        cascade: true,
+        eager:true
+    })
+    
+  @JoinTable()
+  public listSong:Song[]
+  
+  
+  @OneToOne(() => User, (user: User) => user.recentlySongs)
+  public user: User;
 }
 
 export default RecentlySong;

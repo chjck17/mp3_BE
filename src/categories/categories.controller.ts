@@ -9,8 +9,8 @@ export default class CategoriesController {
   constructor(
     private readonly categoriesService: CategoriesService,
   ) {}
-  @Get()
   @UseGuards(JwtAuthenticationGuard)
+  @Get()
   getAllCategories() {
     return this.categoriesService.getAllCategories();
   }

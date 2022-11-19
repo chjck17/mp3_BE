@@ -6,7 +6,7 @@ import PostgresErrorCode from '../database/postgresErrorCode.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import TokenPayload from './tokenPayload.interface';
-
+import RecentlySong from 'src/recentlysongs/recentlysong.entity';
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -16,11 +16,14 @@ export class AuthenticationService {
   ) {}
 
   public async register(registrationData: RegisterDto) {
+   const recentlySong =new RecentlySong
+   recentlySong.listSong=[]
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
-        password: hashedPassword
+        password: hashedPassword,
+        recentlySongs:recentlySong
       });
       createdUser.password = undefined;
       return createdUser;
@@ -61,4 +64,24 @@ export class AuthenticationService {
       throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
     }
   }
+
+  public getCookieWithJwtAccessToken(userId: number, isSecondFactorAuthenticated = false) {
+    const payload: TokenPayload = { userId, isSecondFactorAuthenticated };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_SECRET')
+    });
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
+  }
+ public getCookieWithJwtRefreshToken(userId: number) {
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload, {
+      secret: this.configService.get('JWT_SECRET')
+    });
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
+    return {
+      cookie,
+      token
+    }
+  }
+
 }

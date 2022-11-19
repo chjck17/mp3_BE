@@ -3,16 +3,24 @@ import SongsService from './recentlysongs.service';
 
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import RequestWithUser from './requestWithUser.interface';
-@Controller('song')
-export default class SongsController {
+import RecentlySongsService from './recentlysongs.service';
+
+@Controller('recentlySongs')
+export default class RecentlySongsController {
   constructor(
-    private readonly songsService: SongsService,
+    private readonly recentlySongsService: RecentlySongsService,
   ) {}
-//   @Get()
-//   @UseGuards(JwtAuthenticationGuard)
-//   getAllSongs() {
-//     return this.songsService.getAllSongs();
-//   }
+  @Get()
+  @UseGuards(JwtAuthenticationGuard)
+  getAllSongs(@Req() request: RequestWithUser) {
+    return this.recentlySongsService.getAllSongs(request.user);
+  }
+
+  @Post('addSongToRecentlySongs/:id')
+  @UseGuards(JwtAuthenticationGuard)
+  async addSongToAlbum(@Param('id') id : string,@Req() request: RequestWithUser) {
+    return this.recentlySongsService.addSongToRecentlySongs(Number(id),request.user);
+  }
 //  @Get('/category')
 //   @UseGuards(JwtAuthenticationGuard)
 //   getAllSongsWithCategory() {
@@ -23,7 +31,7 @@ export default class SongsController {
 //   @Get(':id')
 //   getSongById(@Param('id') id: string) {
 //     return this.songsService.getSongById(Number(id));
-//   }
+//   }ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 //   @UseGuards(JwtAuthenticationGuard)
 //   @Post()
 //   async createSong(@Req() req:RequestWithUser,@Body() song: CreateSongDto) {
