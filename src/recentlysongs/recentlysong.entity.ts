@@ -3,8 +3,7 @@ import Song from 'src/songs/song.entity';
 import User from 'src/users/user.entity';
 @Entity()
 class RecentlySong {
-
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   public id?: number;
 
   @ManyToMany(()=> Song ,{
