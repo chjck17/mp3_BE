@@ -4,7 +4,7 @@ import User from 'src/users/user.entity';
 @Entity()
 class RecentlySong {
   @PrimaryGeneratedColumn('uuid')
-  public id?: number;
+  public id?: string;
 
   @ManyToMany(()=> Song ,{
         cascade: true,

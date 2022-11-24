@@ -1,6 +1,6 @@
 export class AddSongDto {
   // tên play list
-  public id: number;
+  public id: string;
   // trạng thái công khai hay không
   public author: string;
   public link : string;

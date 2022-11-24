@@ -19,19 +19,21 @@ import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmatio
 
 @Controller('authentication')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService,
+  constructor(
+    private readonly authenticationService: AuthenticationService,
 
-     private readonly configService: ConfigService,
-        private readonly emailConfirmationService: EmailConfirmationService
-      // private readonly recentlySongsService: RecentlySongsService
-     ) {}
+    private readonly configService: ConfigService,
+    private readonly emailConfirmationService: EmailConfirmationService,
+  ) // private readonly recentlySongsService: RecentlySongsService
+  {}
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
     const user = this.authenticationService.register(registrationData);
-    const test = 'Duy'
-     await this.emailConfirmationService.sendVerificationLink(registrationData.email);
-     return test 
+    await this.emailConfirmationService.sendVerificationLink(
+      registrationData.email,
+    );
+    return user;
   }
 
   @HttpCode(200)
@@ -40,7 +42,7 @@ export class AuthenticationController {
   async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;
     const token = this.authenticationService.getCookieWithJwtToken(user.id);
-    delete user.password; 
+    delete user.password;
     return response.send({
       user,
       token: token,

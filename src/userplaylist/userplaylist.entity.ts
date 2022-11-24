@@ -4,11 +4,15 @@ import Song from 'src/songs/song.entity';
 @Entity()
 class UserPlaylist {
   @PrimaryGeneratedColumn('uuid')
-  public id?: number;
+  public id?: string;
   @Column()
   public name: string;
   @Column()
   public state: boolean;
+  @Column()
+  public image: string;
+  @Column()
+  public description: string;
   @ManyToOne(() => User, (user: User) => user.userPlaylist)
   public user: User;
   @ManyToMany(()=> Song ,{

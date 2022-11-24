@@ -18,7 +18,7 @@ export default class PostsController {
 
   @Get(':id')
   getPostById(@Param('id') id: string) {
-    return this.postsService.getPostById(Number(id));
+    return this.postsService.getPostById(id);
   }
 
   @Post()
@@ -29,11 +29,11 @@ export default class PostsController {
 
   @Patch(':id')
   async updatePost(@Param('id') id: string, @Body() post: UpdatePostDto) {
-    return this.postsService.updatePost(Number(id), post);
+    return this.postsService.updatePost(id, post);
   }
 
   @Delete(':id')
   async deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost(Number(id));
+    return this.postsService.deletePost(id);
   }
 }

@@ -40,7 +40,7 @@ export class AuthenticationService {
     }
   }
 
-  public getCookieWithJwtToken(userId: number) {
+  public getCookieWithJwtToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
     return  token;
@@ -70,7 +70,7 @@ export class AuthenticationService {
     }
   }
 
-  public getCookieWithJwtAccessToken(userId: number, isSecondFactorAuthenticated = false) {
+  public getCookieWithJwtAccessToken(userId: string, isSecondFactorAuthenticated = false) {
     const payload: TokenPayload = { userId, isSecondFactorAuthenticated };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET')
@@ -78,7 +78,7 @@ export class AuthenticationService {
     //  `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
     return token ;
   }
- public getCookieWithJwtRefreshToken(userId: number) {
+ public getCookieWithJwtRefreshToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET')

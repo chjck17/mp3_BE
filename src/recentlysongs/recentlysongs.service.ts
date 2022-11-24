@@ -44,7 +44,7 @@ async getAllSongs(user:User) {
        )
     return recentlysong;
   }
-  async deleteSong(id: number) {
+  async deleteSong(id: string) {
     const deleteResponse = await this.recentlySongsRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('Song not found', HttpStatus.NOT_FOUND);

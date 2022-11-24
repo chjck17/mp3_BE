@@ -1,6 +1,6 @@
 export class UpdateAlbumDto {
-  id:number;
-  id_user:number ;
+  id:string;
+  id_user:string ;
   name: string;
   author: string;
   link:string;

@@ -2,32 +2,31 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import UserPlaylist from './userplaylist.entity';
 import CreateUserPlayListDto from './dto/createUserPlayList.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository,getRepository } from 'typeorm';
- import SongsService from 'src/songs/songs.service';
+import { Repository, getRepository } from 'typeorm';
+import SongsService from 'src/songs/songs.service';
 import User from 'src/users/user.entity';
 @Injectable()
 export default class UserPlaylistsService {
   constructor(
     @InjectRepository(UserPlaylist)
-
     private userPlaylistRepository: Repository<UserPlaylist>,
     private songsService: SongsService,
   ) {}
-   getAllUserPlaylists() {
+  getAllUserPlaylists() {
     return this.userPlaylistRepository.find({ relations: ['user'] });
   }
-  async getPostById(id: number) {
-  const post = await this.userPlaylistRepository.find({ relations: ['user'] });
-  const userPlaylist= post.filter(
-                  item => item.user.id == id ,
-  )
+  async getPostById(id: string) {
+    const post = await this.userPlaylistRepository.find({
+      relations: ['user'],
+    });
+    const userPlaylist = post.filter(item => item.user.id == id);
     return userPlaylist;
   }
-    async getPlayListById(id: number) {
-  const post = await this.userPlaylistRepository.find({ relations: ['user'] });
-  const userPlaylist= post.filter(
-                item => item.id == id ,
-  )
+  async getPlayListById(id: string) {
+    const post = await this.userPlaylistRepository.find({
+      relations: ['user'],
+    });
+    const userPlaylist = post.filter(item => item.id == id);
     return userPlaylist;
   }
   async createUserPlaylist(userPlaylist: CreateUserPlayListDto, user: User) {
@@ -38,27 +37,29 @@ export default class UserPlaylistsService {
     await this.userPlaylistRepository.save(newUserPlaylist);
     return newUserPlaylist;
   }
-  async addSongToUserPlayList(id: string ,iduserPlaylist:number) {
-      const userPlaylist = new UserPlaylist()
-      const song= await this.songsService.getSongById(id)
-      const userPlaylis = await this.userPlaylistRepository.findOne(iduserPlaylist)
-      userPlaylist.listSong =[] 
-      if(userPlaylist.listSong){
-      for (let i = 0; i < userPlaylis.listSong.length; i++) {          
-            userPlaylist.listSong.push(userPlaylis.listSong[i]);
-          }
+  async addSongToUserPlayList(id: string, iduserPlaylist: string) {
+    const userPlaylist = new UserPlaylist();
+    const song = await this.songsService.getSongById(id);
+    const userPlaylis = await this.userPlaylistRepository.findOne(
+      iduserPlaylist,
+    );
+    userPlaylist.listSong = [];
+    if (userPlaylist.listSong) {
+      for (let i = 0; i < userPlaylis.listSong.length; i++) {
+        userPlaylist.listSong.push(userPlaylis.listSong[i]);
       }
-      userPlaylist.listSong.push(song)
-      userPlaylist.id=userPlaylis.id
-      userPlaylist.name=userPlaylis.name
-      userPlaylist.state=userPlaylis.state
-      userPlaylist.user=userPlaylis.user
-     return this.userPlaylistRepository.save(userPlaylist);
     }
+    userPlaylist.listSong.push(song);
+    userPlaylist.id = userPlaylis.id;
+    userPlaylist.name = userPlaylis.name;
+    userPlaylist.state = userPlaylis.state;
+    userPlaylist.user = userPlaylis.user;
+    return this.userPlaylistRepository.save(userPlaylist);
+  }
 
   async getSongToUserPlayList() {
-          return this.userPlaylistRepository.find( { relations: ['listSong'] });
-    }
+    return this.userPlaylistRepository.find({ relations: ['listSong'] });
+  }
   // async updateUserPlaylist(id: number, post: UpdateUserPlayListDto) {
   //   await this.userPlaylistRepository.update(id, post);
   //   const updatedPost = await this.userPlaylistRepository.findOne(id, { relations: ['items'] });

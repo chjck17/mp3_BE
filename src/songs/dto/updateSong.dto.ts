@@ -1,5 +1,5 @@
 export class UpdateSongDto {
-  id:number;
+  id:string;
   author: string;
   link:string;
   image:string;
