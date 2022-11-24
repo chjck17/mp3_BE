@@ -1,3 +1,4 @@
+import FavoriteSong from "src/favoritesongs/favoritesong.entity";
 import RecentlySong from "src/recentlysongs/recentlysong.entity";
 
 export class CreateUserDto {
@@ -6,6 +7,7 @@ export class CreateUserDto {
   password: string;
   role:string;
   recentlySongs:RecentlySong;
+   favoriteSongs:FavoriteSong;
 }
 
 export default CreateUserDto;

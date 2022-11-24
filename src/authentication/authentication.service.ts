@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import TokenPayload from './tokenPayload.interface';
 import RecentlySong from 'src/recentlysongs/recentlysong.entity';
+import FavoriteSong from 'src/favoritesongs/favoritesong.entity';
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -18,12 +19,16 @@ export class AuthenticationService {
   public async register(registrationData: RegisterDto) {
    const recentlySong =new RecentlySong
    recentlySong.listSong=[]
+
+   const favoriteSong =new FavoriteSong
+   favoriteSong.listSong=[]
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
-        recentlySongs:recentlySong
+        recentlySongs:recentlySong,
+        favoriteSongs:favoriteSong,
       });
       createdUser.password = undefined;
       return createdUser;

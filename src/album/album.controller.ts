@@ -22,7 +22,7 @@ export default class AlbumsController {
   @Post('addSongToAlbum/:id/:idAlbum')
   @UseGuards(JwtAuthenticationGuard)
   async addSongToAlbum(@Param('id') id : string,@Param('idAlbum') idAlbum : string) {
-    return this.albumService.addSongToAlbum(Number(id),Number(idAlbum));
+    return this.albumService.addSongToAlbum(id,Number(idAlbum));
   }
 
   @Post('/createAlbum')

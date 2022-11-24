@@ -16,7 +16,7 @@ export default class RecentlySongsService {
     private songsService: SongsService,
   ) {}
 
-  async addSongToRecentlySongs(id: number ,user:User) {
+  async addSongToRecentlySongs(id: string ,user:User) {
     const album = new RecentlySong()
     const song= await this.songsService.getSongById(id)
 

@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn,OneToMany, OneToOne, JoinColumn 
 import UserPlaylist from 'src/userplaylist/userplaylist.entity';
 import RecentlySong from 'src/recentlysongs/recentlysong.entity';
 import { Exclude } from 'class-transformer';
+import FavoriteSong from 'src/favoritesongs/favoritesong.entity';
 
 @Entity()
 class User {
@@ -37,6 +38,13 @@ class User {
   })
   @JoinColumn()
   public recentlySongs: RecentlySong;
+
+  @OneToOne(() => FavoriteSong,{
+  eager: true,
+  cascade: true
+  })
+  @JoinColumn()
+  public favoriteSongs: FavoriteSong;
 
 
   @Column({ default: false })

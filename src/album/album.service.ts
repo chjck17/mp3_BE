@@ -26,7 +26,7 @@ export default class AlbumsService {
     throw new HttpException('Albums not found', HttpStatus.NOT_FOUND);
   }
   
-  async addSongToAlbum(id: number ,iduserPlaylist:number) {
+  async addSongToAlbum(id: string ,iduserPlaylist:number) {
       const album = new Album()
       const song= await this.songsService.getSongById(id)
       const playlis = await this.albumRepository.findOne(iduserPlaylist)

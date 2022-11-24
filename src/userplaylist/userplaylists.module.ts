@@ -7,6 +7,7 @@ import User from 'src/users/user.entity';
 import SongsService from 'src/songs/songs.service';
 import Song from 'src/songs/song.entity';
 import { UsersService } from 'src/users/users.service';
+
 @Module({
   imports: [TypeOrmModule.forFeature([UserPlaylist,User,Song])],
   controllers: [UserPlaylistsController],

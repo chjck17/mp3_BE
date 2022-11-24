@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get,Req, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get,Req, Param, Patch, Post, UseGuards, Query } from '@nestjs/common';
 import SongsService from './songs.service';
 import CreateSongDto from './dto/createSong.dto';
 import UpdateSongDto from './dto/updateSong.dto';
@@ -14,7 +14,7 @@ export default class SongsController {
   getAllSongs() {
     return this.songsService.getAllSongs();
   }
- @Get('/category')
+  @Get('/category')
   @UseGuards(JwtAuthenticationGuard)
   getAllSongsWithCategory() {
     return this.songsService.getAllSongsWithCategory();
@@ -23,7 +23,7 @@ export default class SongsController {
 
   @Get(':id')
   getSongById(@Param('id') id: string) {
-    return this.songsService.getSongById(Number(id));
+    return this.songsService.getSongById(id);
   }
   @UseGuards(JwtAuthenticationGuard)
   @Post()
@@ -38,4 +38,5 @@ export default class SongsController {
   async deleteSong(@Param('id') id: string) {
     return this.songsService.deleteSong(Number(id));
   }
+ 
 }

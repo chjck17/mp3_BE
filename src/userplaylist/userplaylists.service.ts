@@ -38,7 +38,7 @@ export default class UserPlaylistsService {
     await this.userPlaylistRepository.save(newUserPlaylist);
     return newUserPlaylist;
   }
-  async addSongToUserPlayList(id: number ,iduserPlaylist:number) {
+  async addSongToUserPlayList(id: string ,iduserPlaylist:number) {
       const userPlaylist = new UserPlaylist()
       const song= await this.songsService.getSongById(id)
       const userPlaylis = await this.userPlaylistRepository.findOne(iduserPlaylist)

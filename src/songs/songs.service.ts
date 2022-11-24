@@ -3,16 +3,13 @@ import Song from './song.entity';
 import CreateSongDto from './dto/createSong.dto';
 import UpdateSongDto from './dto/updateSong.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository,getRepository } from 'typeorm';
+import { Repository } from 'typeorm';
 import User from 'src/users/user.entity';
-import { userInfo } from 'os';
-import { number } from '@hapi/joi';
-import { relative } from 'path';
 @Injectable()
 export default class SongsService {
   constructor(
     @InjectRepository(Song)
-    private songsRepository: Repository<Song>,
+    private songsRepository: Repository<Song>
   ) {}
   getAllSongs() {
     return this.songsRepository.find();
@@ -23,7 +20,7 @@ export default class SongsService {
     return this.songsRepository.find({ relations: ['categories'] });
   }
 
-  async getSongById(id: number) {
+  async getSongById(id: string) {
     const song = await this.songsRepository.findOne(id);
     if (song) {
       return song;
@@ -36,6 +33,7 @@ export default class SongsService {
     if(user.role =='admin'){
     const newSong = await this.songsRepository.create(song);
     await this.songsRepository.save(newSong);
+
     return newSong;
     }
     throw new UnauthorizedException;
@@ -59,6 +57,9 @@ export default class SongsService {
       throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
     }
   }
+
+
+
   // async getSongOfUser(idUser: number) {
   //     const user = await getRepository(Song) 
   //     .createQueryBuilder("user") 

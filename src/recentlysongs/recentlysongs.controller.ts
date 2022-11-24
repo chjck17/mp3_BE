@@ -19,7 +19,7 @@ export default class RecentlySongsController {
   @Post('addSongToRecentlySongs/:id')
   @UseGuards(JwtAuthenticationGuard)
   async addSongToAlbum(@Param('id') id : string,@Req() request: RequestWithUser) {
-    return this.recentlySongsService.addSongToRecentlySongs(Number(id),request.user);
+    return this.recentlySongsService.addSongToRecentlySongs(id,request.user);
   }
 //  @Get('/category')
 //   @UseGuards(JwtAuthenticationGuard)

@@ -13,6 +13,7 @@ import { RecentlySongsModule } from './recentlysongs/recentlysongs.module';
 import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
 import { EmailModule } from './email/email.module';
 import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthentication.module';
+import { FavoriteSongsModule } from './favoritesongs/favoritesongs.module';
 @Module({
   imports: [
     PostsModule,
@@ -36,7 +37,7 @@ import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthent
         GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
         PORT: Joi.number(),
-        synchronize: Joi.bool(),
+        synchronize: Joi.bool(), 
       }),
     }),
     DatabaseModule,
@@ -47,10 +48,10 @@ import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthent
     AlbumModule,
     SongModule,
     RecentlySongsModule,
-     EmailModule,
+    EmailModule,
     EmailConfirmationModule,
     GoogleAuthenticationModule,
-   
+     FavoriteSongsModule,
     // LocalFilesModule,
     // RecentlyModule,
   ],

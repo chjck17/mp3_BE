@@ -12,6 +12,6 @@ import SongsService from 'src/songs/songs.service';
 @Module({
   imports: [TypeOrmModule.forFeature([RecentlySong,User,Song])],
   controllers: [RecentlySongsController],
-  providers: [SongsService,RecentlySongsService],
+  providers: [SongsService,RecentlySongsService,],
 })
 export class RecentlySongsModule {}

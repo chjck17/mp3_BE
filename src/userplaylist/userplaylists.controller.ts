@@ -26,7 +26,7 @@ export default class UserPlaylistsController {
   }
   @Post('addSongToUserPlayList/:id/:idplaylist')
   async addsongToUserPlayList(@Param('id') id : string,@Param('idplaylist') idplaylist : string) {
-     return this.userPlaylistsService.addSongToUserPlayList(Number(id),Number(idplaylist))
+     return this.userPlaylistsService.addSongToUserPlayList(id,Number(idplaylist))
   }
   @Post('/getSongToUserPlayList')
   async getSongToUserPlayList() {
