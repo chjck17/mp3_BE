@@ -6,10 +6,10 @@ class Category {
   public id?: string;
   @Column()
   public name: string;
-  @Column()
-  public image: string;
-  @Column()
-  public description: string;
+  // @Column()
+  // public image: string;
+  // @Column()
+  // public description: string;
   @ManyToMany(()=>Song , (songs:Song)=>(songs.categories))
   @JoinTable()
   public songs :Song[]; 

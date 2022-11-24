@@ -26,7 +26,7 @@ async addSongToFavoriteSongs(id: string ,user:User) {
                 item => item.user.id == user.id,
        )
     favorite.listSong =[] 
-    if(favorite.listSong){
+    if(playlis[0].listSong){
     for (let i = 0; i < playlis[0].listSong.length; i++) {          
           favorite.listSong.push(playlis[0].listSong[i]);
         }
@@ -41,19 +41,21 @@ async getAllSongs(user:User) {
       const recentlysong= song.filter(
                 item => item.user.id == user.id,
        )
-    return recentlysong;
+    return recentlysong[0].listSong;
   }
-async deleteSong(id: number ,user:User) {
-
+async deleteSong(id: string ,user:User) {
+   
    const songs= await this.favoriteSongsRepository.find({ relations: ['user'] });
     const playlis= songs.filter(
                 item => item.user.id == user.id,
        )
-
-   return playlis;
-    // const deleteResponse = await this.favoriteSongsRepository.delete(id);
-    // if (!deleteResponse.affected) {
-    //   throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
-    // }
+    if(playlis[0].listSong){
+    for (let i = 0; i < playlis[0].listSong.length; i++) {          
+        if( playlis[0].listSong[i].id == id ){
+          playlis[0].listSong.splice(i, 1)
+        }
+        }
+    }    
+ return this.favoriteSongsRepository.save(playlis[0]);
   }
 }

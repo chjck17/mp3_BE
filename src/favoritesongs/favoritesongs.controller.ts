@@ -23,6 +23,6 @@ export default class FavoriteSongsController {
   @Delete('deleteSongFromFavoriteSongs/:id')
   @UseGuards(JwtAuthenticationGuard)
   async deleteSongFromFavorite(@Param('id') id : string,@Req() request: RequestWithUser) {
-    return this.favoriteSongsService.deleteSong(Number(id),request.user)
+    return this.favoriteSongsService.deleteSong(id,request.user)
   }
 }

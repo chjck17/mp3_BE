@@ -5,6 +5,7 @@ import UpdateSongDto from './dto/updateSong.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import User from 'src/users/user.entity';
+import CreateSongDtoCategory from './dto/createSongWithCategory.dto';
 @Injectable()
 export default class SongsService {
   constructor(
@@ -29,15 +30,29 @@ export default class SongsService {
     throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
   }
   async createSong(song: CreateSongDto,user:User ) {
+    const categories =[]
+    const object={id:""}
+    if(song.category){
+    for (let i = 0; i < song.category.length; i++) {    
+         categories.push({id:song.category[i]});
+        }
+    }
+    const crateSong = new CreateSongDtoCategory
+    crateSong.author=song.author
+    crateSong.description=song.description
+    crateSong.image=song.image
+    crateSong.link=song.link
+    crateSong.name=song.name
     
+
     if(user.role =='admin'){
-    const newSong = await this.songsRepository.create(song);
+    const newSong = await this.songsRepository.create({...crateSong,categories});
     await this.songsRepository.save(newSong);
 
     return newSong;
     }
     throw new UnauthorizedException;
-   //return song;
+  //  return categories;
   }
   async updateSong(id: string, song: UpdateSongDto,user:User) {
     if(user.role== 'admin'){
