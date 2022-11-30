@@ -4,7 +4,7 @@ export class CreateSongDto {
   link:string;
   image:string;
   description:string;
-    category:[];
+  category:[];
 }
 
 export default CreateSongDto;
