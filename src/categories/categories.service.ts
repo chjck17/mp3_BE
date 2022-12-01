@@ -1,6 +1,11 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository,getRepository } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 import User from 'src/users/user.entity';
 import Category from './category.entity';
 import CreateCategoryDto from './dto/createCategory.dto';
@@ -12,11 +17,13 @@ export default class CategoriesService {
     private categoriesRepository: Repository<Category>,
   ) {}
   getAllCategories() {
-    return this.categoriesRepository.find({relations:['songs']});
+    return this.categoriesRepository.find({ relations: ['songs'] });
   }
-   async getSongByCategories(id:string) {
-    const songst= await this.categoriesRepository.find({relations:['songs']});
-    const userPlaylist= songst.filter(item => item.id === id ,)
+  async getSongByCategories(id: string) {
+    const songst = await this.categoriesRepository.find({
+      relations: ['songs'],
+    });
+    const userPlaylist = songst.find(item => item.id === id);
     return userPlaylist;
   }
   async getCategoryById(id: string) {
@@ -26,28 +33,26 @@ export default class CategoriesService {
     }
     throw new HttpException('category not found', HttpStatus.NOT_FOUND);
   }
-  async createCategory(category: CreateCategoryDto,user:User ) {
-    
-    if(user.role =='admin'){
-    const newSong = await this.categoriesRepository.create(category);
-    await this.categoriesRepository.save(newSong);
-    return newSong;
+  async createCategory(category: CreateCategoryDto, user: User) {
+    if (user.role == 'admin') {
+      const newSong = await this.categoriesRepository.create(category);
+      await this.categoriesRepository.save(newSong);
+      return newSong;
     }
-    throw new UnauthorizedException;
+    throw new UnauthorizedException();
   }
-  async updateCategory(id: string, category: UpdateCategoryDto,user:User) {
-    if(user.role== 'admin'){
-    await this.categoriesRepository.update(id,category);
-    const updatedSong = await this.categoriesRepository.findOne(id);
-    if (updatedSong) {
-      return updatedSong
+  async updateCategory(category: UpdateCategoryDto, user: User) {
+    if (user.role == 'admin') {
+      await this.categoriesRepository.update(category.id, category);
+      const updatedSong = await this.categoriesRepository.findOne(category.id);
+      if (updatedSong) {
+        return updatedSong;
+      }
+      throw new HttpException('category not found', HttpStatus.NOT_FOUND);
     }
-    throw new HttpException('category not found', HttpStatus.NOT_FOUND);
-  }
-  throw new UnauthorizedException;
+    throw new UnauthorizedException();
   }
   async deleteCategory(id: string) {
-
     const deleteResponse = await this.categoriesRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new HttpException('category not found', HttpStatus.NOT_FOUND);

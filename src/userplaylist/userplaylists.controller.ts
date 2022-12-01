@@ -24,6 +24,11 @@ export default class UserPlaylistsController {
   getUserPlayList(@Req() req: RequestWithUser) {
     return this.usersService.getUserPlayList( req.user);
   }
+  @Get('/getUserPlayList/:id')
+  @UseGuards(JwtAuthenticationGuard)
+  getUserPlayListDetail(@Req() req: RequestWithUser, @Param('id') id: string) {
+    return this.usersService.getUserPlayListDetail( req.user, id);
+  }
   @Post('addSongToUserPlayList/:id/:idplaylist')
   async addsongToUserPlayList(@Param('id') id : string,@Param('idplaylist') idplaylist : string) {
      return this.userPlaylistsService.addSongToUserPlayList(id,idplaylist)
