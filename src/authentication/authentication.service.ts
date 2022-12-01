@@ -8,12 +8,16 @@ import { ConfigService } from '@nestjs/config';
 import TokenPayload from './tokenPayload.interface';
 import RecentlySong from 'src/recentlysongs/recentlysong.entity';
 import FavoriteSong from 'src/favoritesongs/favoritesong.entity';
+import RePassWordDto from './dto/repassword.dto';
+import EmailService from 'src/email/email.service';
+import User from 'src/users/user.entity';
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+       private readonly emailService: EmailService,
   ) {}
 
   public async register(registrationData: RegisterDto) {
@@ -78,7 +82,8 @@ export class AuthenticationService {
     //  `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
     return token ;
   }
- public getCookieWithJwtRefreshToken(userId: string) {
+
+  public getCookieWithJwtRefreshToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('JWT_SECRET')
@@ -90,4 +95,45 @@ export class AuthenticationService {
     }
   }
 
+  public async forgotPassword(user:User,pass: RePassWordDto) {
+
+      const text = pass.password;
+          await this.emailService.sendMail({
+            to: user.email,
+            subject: 'Email confirmation',
+            text,
+          })
+    const hashedPassword = await bcrypt.hash(pass.password, 10);
+    try {
+      const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
+      // createdUser.password = undefined;
+      return createdUser;
+    } catch (error) {
+      if (error?.code === PostgresErrorCode.UniqueViolation) {
+        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+      }
+      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  public async rePassword(user:User,pass: RePassWordDto) {
+
+      // const text = pass.password;
+      //     await this.emailService.sendMail({
+      //       to: user.email,
+      //       subject: 'Email confirmation',
+      //       text,
+      //     })
+    const hashedPassword = await bcrypt.hash(pass.password, 10);
+    try {
+      const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
+      // createdUser.password = undefined;
+      return createdUser;
+    } catch (error) {
+      if (error?.code === PostgresErrorCode.UniqueViolation) {
+        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+      }
+      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }

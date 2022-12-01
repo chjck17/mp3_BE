@@ -11,6 +11,6 @@ import RecentlySong from 'src/recentlysongs/recentlysong.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Song,UserPlaylist,Category])],
   controllers: [SongsController],
-  providers: [SongsService,UserPlaylistsService],
+  providers: [SongsService,UserPlaylistsService,],
 })
 export class SongModule {}

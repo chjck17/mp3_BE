@@ -5,7 +5,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
+
       imports: [ConfigModule],
+       
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
@@ -26,6 +28,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         synchronize: true,
       })
     }),
-  ],
+  ]
 })
 export class DatabaseModule {}

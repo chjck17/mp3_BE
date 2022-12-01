@@ -1,10 +1,9 @@
-export class CreateSongDto {
+export class CreateSongDtoCategory {
   name: string;
   author: string;
   link:string;
   image:string;
   description:string;
-  category:[];
 }
 
-export default CreateSongDto;
+export default CreateSongDtoCategory;
