@@ -4,6 +4,7 @@ import CreateSongDto from './dto/createSong.dto';
 import UpdateSongDto from './dto/updateSong.dto';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import RequestWithUser from './requestWithUser.interface';
+import PaginationParams from 'src/utils/paginationParams';
 @Controller('song')
 export default class SongsController {
   constructor(
@@ -17,8 +18,6 @@ export default class SongsController {
   getAllSongsWithCategory() {
     return this.songsService.getAllSongsWithCategory();
   }
-
-
   @Get(':id')
   getSongById(@Param('id') id: string) {
     return this.songsService.getSongById(id);

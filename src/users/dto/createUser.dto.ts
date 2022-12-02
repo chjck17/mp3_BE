@@ -7,7 +7,7 @@ export class CreateUserDto {
   password: string;
   role:string;
   recentlySongs:RecentlySong;
-   favoriteSongs:FavoriteSong;
+  favoriteSongs:FavoriteSong;
 }
 
 export default CreateUserDto;

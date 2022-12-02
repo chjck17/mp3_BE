@@ -10,7 +10,7 @@ import CreateSongDtoCategory from './dto/createSongWithCategory.dto';
 export default class SongsService {
   constructor(
     @InjectRepository(Song)
-    private songsRepository: Repository<Song>
+    private songsRepository: Repository<Song>,
   ) {}
   getAllSongs() {
     return this.songsRepository.find();
@@ -22,7 +22,7 @@ export default class SongsService {
   }
 
   async getSongById(id: string) {
-    const song = await this.songsRepository.findOne(id);
+    const song = await this.songsRepository.findOne(id,{ relations: ['categories'] });
     if (song) {
       return song;
     }
@@ -72,9 +72,7 @@ export default class SongsService {
       throw new HttpException('Song not found', HttpStatus.NOT_FOUND);
     }
   }
-
-
-
+  
   // async getSongOfUser(idUser: number) {
   //     const user = await getRepository(Song) 
   //     .createQueryBuilder("user") 
@@ -90,5 +88,5 @@ export default class SongsService {
   // userPlaylist:Playlist
   // )
   //     return ;
-  //   }
+  // }
 }

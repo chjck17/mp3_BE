@@ -5,6 +5,7 @@ import User from './user.entity';
 import CreateUserDto from './dto/createUser.dto';
 import { x } from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
+import RePassWordUserDto from './dto/rePassWord.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -48,13 +49,19 @@ export class UsersService {
     await this.usersRepository.save(newUser);
     return newUser;
   }
-  async markEmailAsConfirmed(email: string) {
-    return this.usersRepository.update(
-      { email },
-      {
-        isEmailConfirmed: true,
-      },
-    );
+  async rePassWord(id: string ,password:RePassWordUserDto ) {
+    const newUser = await this.usersRepository.update(id,password)
+    return newUser;
+    
+  }
+
+
+
+    async markEmailAsConfirmed(email: string) {
+    return this.usersRepository.update({ email }, {
+      isEmailConfirmed: true
+    });
+    
   }
   async createWithGoogle(email: string, name: string) {
     const newUser = await this.usersRepository.create({

@@ -9,10 +9,11 @@ import { AuthenticationService } from 'src/authentication/authentication.service
 import User from 'src/users/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import EmailService from 'src/email/email.service';
 
 @Module({
   imports: [ConfigModule, UsersModule,JwtModule.register({}), AuthenticationModule,TypeOrmModule.forFeature([User])],
-  providers: [GoogleAuthenticationService,UsersService,AuthenticationService],
+  providers: [GoogleAuthenticationService,UsersService,AuthenticationService,EmailService],
   controllers: [GoogleAuthenticationController],
   exports: []
 })
