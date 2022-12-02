@@ -32,7 +32,6 @@ import { ConfigurableDatabaseModule } from './databasedinamic/database.module-de
         database: configService.get('POSTGRES_DB'),
       }),
     }),
-
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),

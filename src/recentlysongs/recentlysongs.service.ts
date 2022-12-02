@@ -22,7 +22,7 @@ export default class RecentlySongsService {
 
     const songs= await this.recentlySongsRepository.find({ relations: ['user'] });
     const playlis= songs.filter(
-                item => item.user.id == user.id,
+                item => item?.user?.id == user.id,
        )
     // const playlis = await this.recentlySongsRepository.findOne(iduserPlaylist)
     album.listSong =[] 
@@ -40,7 +40,7 @@ async getAllSongs(user:User) {
     // return this.recentlySongsRepository.find();
       const song= await this.recentlySongsRepository.find({ relations: ['user'] });
       const recentlysong= song.filter(
-                item => item.user.id == user.id,
+                item => item?.user?.id == user.id,
        )
     return recentlysong;
   }
