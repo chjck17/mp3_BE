@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import CategoriesService from './categories.service';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
@@ -17,7 +18,7 @@ import UpdateCategoryDto from './dto/updateCategory.dto';
 @Controller('category')
 export default class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
-  //Lấy danh sách category
+  ///Lấy danh sách category
   @Get()
   getAllCategories() {
     return this.categoriesService.getAllCategories();
@@ -42,7 +43,8 @@ export default class CategoriesController {
     return this.categoriesService.createCategory(category, req.user);
   }
   //Cập nhập category
-  @Patch(':id')
+  @UseGuards(JwtAuthenticationGuard)
+  @Put(':id')
   async updateCategory(
     @Req() req: RequestWithUser,
     @Body() category: UpdateCategoryDto,

@@ -15,6 +15,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import { ValidationPipe  } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
 declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +28,13 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
   });
   app.use(cookieParser());
+  const config = new DocumentBuilder()
+    .setTitle('MUSIC MP3 ')
+    .setDescription('Music MP3 API')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   await app.listen(5000);
   if (module.hot) {
     module.hot.accept();

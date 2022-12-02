@@ -24,7 +24,6 @@ export class UsersService {
   }
   async getUserPlayList(id: User) {
     const playList = this.usersRepository.find({ relations: ['userPlaylist'] });
-    console.log(playList.then(x => console.log(x)));
     const UserPlayList = (await playList).filter(item => item.id == id.id);
     return UserPlayList[0].userPlaylist;
   }
