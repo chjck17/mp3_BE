@@ -23,9 +23,8 @@ export class AuthenticationController {
     private readonly authenticationService: AuthenticationService,
 
     private readonly configService: ConfigService,
-    private readonly emailConfirmationService: EmailConfirmationService,
-  ) // private readonly recentlySongsService: RecentlySongsService
-  {}
+    private readonly emailConfirmationService: EmailConfirmationService, // private readonly recentlySongsService: RecentlySongsService
+  ) {}
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
@@ -45,7 +44,12 @@ export class AuthenticationController {
 
     delete user.password;
 
-     response.setHeader('Set-Cookie', `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`);
+    response.setHeader(
+      'Set-Cookie',
+      `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+        'JWT_EXPIRATION_TIME',
+      )}`,
+    );
     return response.send({
       user,
       token: token,
