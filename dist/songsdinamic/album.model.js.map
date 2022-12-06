@@ -1,0 +1,1 @@
+{"version":3,"file":"album.model.js","sourceRoot":"","sources":["../../src/songsdinamic/album.model.ts"],"names":[],"mappings":";;AAKA,MAAM,UAAU;IAId,YAAY,SAAyB;QACnC,IAAI,CAAC,EAAE,GAAG,SAAS,CAAC,EAAE,CAAC;QACvB,IAAI,CAAC,IAAI,GAAG,SAAS,CAAC,IAAI,CAAC;QAC3B,IAAI,CAAC,WAAW,GAAG,SAAS,CAAC,WAAW,CAAC;IAC3C,CAAC;CACF;AAED,kBAAe,UAAU,CAAC"}
