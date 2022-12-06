@@ -26,15 +26,22 @@ export default class RecentlySongsService {
        )
     // const playlis = await this.recentlySongsRepository.findOne(iduserPlaylist)
     album.listSong =[] 
-    if(album.listSong){
-    for (let i = 0; i < playlis[0].listSong.length; i++) {          
+     if (album.listSong) {
+      if( playlis[0].listSong.length >=8 )
+        for (let i = 1; i < 8; i++) {
           album.listSong.push(playlis[0].listSong[i]);
         }
+      else {
+         for (let i = 0; i < playlis[0].listSong.length; i++) {
+          album.listSong.push(playlis[0].listSong[i]);
+        }
+      }
     }
     album.listSong.push(song)
     album.id=playlis[0].id
   
     return this.recentlySongsRepository.save(album);
+  
   }
 async getAllSongs(user:User) {
     // return this.recentlySongsRepository.find();
