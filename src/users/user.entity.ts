@@ -48,13 +48,12 @@ class User {
   @JoinColumn()
   public recentlySongs: RecentlySong;
 
-  @OneToOne(() => FavoriteSong,{
-  eager: true,
-  cascade: true
+  @OneToOne(() => FavoriteSong, {
+    eager: true,
+    cascade: true,
   })
   @JoinColumn()
   public favoriteSongs: FavoriteSong;
-
 
   @Column({ default: false })
   public isRegisteredWithGoogle: boolean;
@@ -66,6 +65,13 @@ class User {
   public currentHashedRefreshToken?: string;
   // @Column()
   // public stripeCustomerId: string;
+
+  @Column({ nullable: true })
+  public sex: string;
+  @Column({ nullable: true })
+  public dateOfBirth: Date;
+  @Column({ nullable: true })
+  public country: string;
 }
 
 export default User;
