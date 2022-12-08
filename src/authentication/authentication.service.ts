@@ -11,6 +11,7 @@ import FavoriteSong from 'src/favoritesongs/favoritesong.entity';
 import RePassWordDto from './dto/repassword.dto';
 import EmailService from 'src/email/email.service';
 import User from 'src/users/user.entity';
+import EditProfileDto from 'src/users/dto/editProfile.dto';
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -117,13 +118,6 @@ export class AuthenticationService {
   }
 
   public async rePassword(user:User,pass: RePassWordDto) {
-
-      // const text = pass.password;
-      //     await this.emailService.sendMail({
-      //       to: user.email,
-      //       subject: 'Email confirmation',
-      //       text,
-      //     })
     const hashedPassword = await bcrypt.hash(pass.password, 10);
     try {
       const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
@@ -136,4 +130,6 @@ export class AuthenticationService {
       throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+
 }

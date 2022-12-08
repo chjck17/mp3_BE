@@ -17,24 +17,25 @@ import { ConfigService } from '@nestjs/config';
 import RecentlySongsService from 'src/recentlysongs/recentlysongs.service';
 import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmation.service';
 import RePassWordDto from './dto/repassword.dto';
+import EditProfileDto from 'src/users/dto/editProfile.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('authentication')
 export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly configService: ConfigService,
-    private readonly emailConfirmationService: EmailConfirmationService, // private readonly recentlySongsService: RecentlySongsService
+    private readonly emailConfirmationService: EmailConfirmationService,
+    private readonly usersService: UsersService, // private readonly recentlySongsService: RecentlySongsService
   ) {}
-
   @Post('register')
-  async register(@Body() registrationData: RegisterDto) { 
+  async register(@Body() registrationData: RegisterDto) {
     const user = this.authenticationService.register(registrationData);
     await this.emailConfirmationService.sendVerificationLink(
       registrationData.email,
     );
     return user;
   }
-
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
   @Post('login')
@@ -56,7 +57,6 @@ export class AuthenticationController {
       message: 'Login account success',
     });
   }
-
   @UseGuards(JwtAuthenticationGuard)
   @Post('logout')
   async logOut(@Res() response: Response) {
@@ -66,7 +66,6 @@ export class AuthenticationController {
     );
     return response.sendStatus(200);
   }
-
   @UseGuards(JwtAuthenticationGuard)
   @Post()
   authenticate(@Req() request: RequestWithUser) {
@@ -74,23 +73,22 @@ export class AuthenticationController {
     // user.password = undefined;
     return user;
   }
-
-
   @UseGuards(JwtAuthenticationGuard)
-    @Post('rePassword')
-  async rePassword(@Req() request: RequestWithUser, @Body() rePassword: RePassWordDto) {
-
-     await this.authenticationService.rePassword(request.user,rePassword)
+  @Post('rePassword')
+  async rePassword(
+    @Req() request: RequestWithUser,
+    @Body() rePassword: RePassWordDto,
+  ) {
+    await this.authenticationService.rePassword(request.user, rePassword);
   }
   @UseGuards(JwtAuthenticationGuard)
   @Post('forgotPassword')
-  async forgotPassword(@Req() request: RequestWithUser ) {
-
-    const pass =  Math.floor(Math.random() * 10000000);
-    const passs= String(pass)
- await this.authenticationService.forgotPassword(request.user,{password:passs})
-
-
+  async forgotPassword(@Req() request: RequestWithUser) {
+    const pass = Math.floor(Math.random() * 10000000);
+    const passs = String(pass);
+    await this.authenticationService.forgotPassword(request.user, {
+      password: passs,
+    });
 
     // const { user } = request;
     // const token = this.authenticationService.getCookieWithJwtToken(user.id);
@@ -103,5 +101,13 @@ export class AuthenticationController {
     //   token: token,
     //   message: 'Login account success',
     // });
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Post('editProfile')
+  async editProfile(@Req() request: RequestWithUser,@Body() profile: EditProfileDto) {
+    //  await this.authenticationService.forgotPassword(request.user,{password:passs})
+      const duy=  await this.usersService.editProfile(request.user.id, profile);
+      return duy
   }
 }
