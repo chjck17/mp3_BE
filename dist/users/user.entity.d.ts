@@ -13,5 +13,8 @@ declare class User {
     favoriteSongs: FavoriteSong;
     isRegisteredWithGoogle: boolean;
     currentHashedRefreshToken?: string;
+    sex: string;
+    dateOfBirth: Date;
+    country: string;
 }
 export default User;

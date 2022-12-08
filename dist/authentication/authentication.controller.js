@@ -21,11 +21,14 @@ const jwt_authentication_guard_1 = require("./jwt-authentication.guard");
 const config_1 = require("@nestjs/config");
 const emailConfirmation_service_1 = require("../emailConfirmation/emailConfirmation.service");
 const repassword_dto_1 = require("./dto/repassword.dto");
+const editProfile_dto_1 = require("../users/dto/editProfile.dto");
+const users_service_1 = require("../users/users.service");
 let AuthenticationController = class AuthenticationController {
-    constructor(authenticationService, configService, emailConfirmationService) {
+    constructor(authenticationService, configService, emailConfirmationService, usersService) {
         this.authenticationService = authenticationService;
         this.configService = configService;
         this.emailConfirmationService = emailConfirmationService;
+        this.usersService = usersService;
     }
     async register(registrationData) {
         const user = this.authenticationService.register(registrationData);
@@ -57,7 +60,13 @@ let AuthenticationController = class AuthenticationController {
     async forgotPassword(request) {
         const pass = Math.floor(Math.random() * 10000000);
         const passs = String(pass);
-        await this.authenticationService.forgotPassword(request.user, { password: passs });
+        await this.authenticationService.forgotPassword(request.user, {
+            password: passs,
+        });
+    }
+    async editProfile(request, profile) {
+        const duy = await this.usersService.editProfile(request.user.id, profile);
+        return duy;
     }
 };
 __decorate([
@@ -110,11 +119,21 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "forgotPassword", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_authentication_guard_1.default),
+    (0, common_1.Post)('editProfile'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, editProfile_dto_1.default]),
+    __metadata("design:returntype", Promise)
+], AuthenticationController.prototype, "editProfile", null);
 AuthenticationController = __decorate([
     (0, common_1.Controller)('authentication'),
     __metadata("design:paramtypes", [authentication_service_1.AuthenticationService,
         config_1.ConfigService,
-        emailConfirmation_service_1.EmailConfirmationService])
+        emailConfirmation_service_1.EmailConfirmationService,
+        users_service_1.UsersService])
 ], AuthenticationController);
 exports.AuthenticationController = AuthenticationController;
 //# sourceMappingURL=authentication.controller.js.map
