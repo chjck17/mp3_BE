@@ -79,6 +79,10 @@ let UsersService = class UsersService {
             currentHashedRefreshToken,
         });
     }
+    async editProfile(id, profile) {
+        const user = await this.usersRepository.findOne(id);
+        return await this.usersRepository.save(Object.assign(Object.assign({}, user), { sex: profile.sex, dateOfBirth: profile.dateOfBirth, country: profile.country }));
+    }
 };
 UsersService = __decorate([
     (0, common_1.Injectable)(),

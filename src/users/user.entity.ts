@@ -66,7 +66,7 @@ class User {
   // @Column()
   // public stripeCustomerId: string;
 
-  @Column({ nullable: true })
+  @Column( { nullable: true } )
   public sex: string;
   @Column({ nullable: true })
   public dateOfBirth: Date;

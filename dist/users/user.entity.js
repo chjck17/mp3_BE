@@ -56,7 +56,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.OneToOne)(() => favoritesong_entity_1.default, {
         eager: true,
-        cascade: true
+        cascade: true,
     }),
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", favoritesong_entity_1.default)
@@ -72,6 +72,18 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", String)
 ], User.prototype, "currentHashedRefreshToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "sex", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Date)
+], User.prototype, "dateOfBirth", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], User.prototype, "country", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);
