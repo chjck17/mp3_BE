@@ -86,16 +86,17 @@ let AuthenticationService = class AuthenticationService {
             token
         };
     }
-    async forgotPassword(user, pass) {
+    async forgotPassword(email, pass) {
         const text = pass.password;
         await this.emailService.sendMail({
-            to: user.email,
+            to: email.email,
             subject: 'Email confirmation',
             text,
         });
         const hashedPassword = await bcrypt.hash(pass.password, 10);
         try {
-            const createdUser = await this.usersService.rePassWord(user.id, { password: hashedPassword });
+            const userForget = await this.usersService.getByEmail(email.email);
+            const createdUser = await this.usersService.rePassWord(userForget.id, { password: hashedPassword });
             return createdUser;
         }
         catch (error) {

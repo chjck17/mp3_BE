@@ -17,9 +17,6 @@ export class RegisterDto {
   password: string;
   
   role:string;
-
-
-  recentlySongs:RecentlySong;
 }
 
 export default RegisterDto;
