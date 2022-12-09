@@ -97,7 +97,8 @@ export class AuthenticationService {
   }
 
   public async forgotPassword(user:User,pass: RePassWordDto) {
-
+    const users = this.usersService.getByEmail(user.email)
+    console.log(users);
       const text = pass.password;
           await this.emailService.sendMail({
             to: user.email,
