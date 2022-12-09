@@ -28,6 +28,7 @@ DatabaseModule = __decorate([
                     entities: [
                         __dirname + '/../**/*.entity{.ts,.js}',
                     ],
+                    synchronize: true,
                 })
             }),
         ]

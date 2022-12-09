@@ -72,7 +72,6 @@ class User {
 
   @Column({ nullable: true })
   public country: string;
-  
 }
 
 export default User;
