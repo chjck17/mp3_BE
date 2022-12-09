@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import RePassWordDto from './dto/repassword.dto';
 import EmailService from 'src/email/email.service';
 import User from 'src/users/user.entity';
+import EmailRePassWordDto from './dto/emailForgetPassWord.dto';
 export declare class AuthenticationService {
     private readonly usersService;
     private readonly jwtService;
@@ -21,6 +22,6 @@ export declare class AuthenticationService {
         cookie: string;
         token: string;
     };
-    forgotPassword(user: User, pass: RePassWordDto): Promise<import("typeorm").UpdateResult>;
+    forgotPassword(email: EmailRePassWordDto, pass: RePassWordDto): Promise<import("typeorm").UpdateResult>;
     rePassword(user: User, pass: RePassWordDto): Promise<import("typeorm").UpdateResult>;
 }

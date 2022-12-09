@@ -23,6 +23,9 @@ const emailConfirmation_service_1 = require("../emailConfirmation/emailConfirmat
 const repassword_dto_1 = require("./dto/repassword.dto");
 const editProfile_dto_1 = require("../users/dto/editProfile.dto");
 const users_service_1 = require("../users/users.service");
+const editProfile_dto_1 = require("../users/dto/editProfile.dto");
+const users_service_1 = require("../users/users.service");
+const emailForgetPassWord_dto_1 = require("./dto/emailForgetPassWord.dto");
 let AuthenticationController = class AuthenticationController {
     constructor(authenticationService, configService, emailConfirmationService, usersService) {
         this.authenticationService = authenticationService;
@@ -57,10 +60,17 @@ let AuthenticationController = class AuthenticationController {
     async rePassword(request, rePassword) {
         await this.authenticationService.rePassword(request.user, rePassword);
     }
-    async forgotPassword(request) {
+    async forgotPassword(email) {
         const pass = Math.floor(Math.random() * 10000000);
         const passs = String(pass);
         await this.authenticationService.forgotPassword(request.user, {
+            password: passs,
+        });
+    }
+    async editProfile(request, profile) {
+        const duy = await this.usersService.editProfile(request.user.id, profile);
+        return duy;
+        await this.authenticationService.forgotPassword(email, {
             password: passs,
         });
     }
@@ -112,11 +122,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "rePassword", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_authentication_guard_1.default),
     (0, common_1.Post)('forgotPassword'),
-    __param(0, (0, common_1.Req)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [emailForgetPassWord_dto_1.default]),
     __metadata("design:returntype", Promise)
 ], AuthenticationController.prototype, "forgotPassword", null);
 __decorate([

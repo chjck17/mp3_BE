@@ -19,6 +19,7 @@ import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmatio
 import RePassWordDto from './dto/repassword.dto';
 import EditProfileDto from 'src/users/dto/editProfile.dto';
 import { UsersService } from 'src/users/users.service';
+import EmailRePassWordDto from './dto/emailForgetPassWord.dto';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -41,6 +42,7 @@ export class AuthenticationController {
   @Post('login')
   async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;
+    // return user.id
     const token = this.authenticationService.getCookieWithJwtToken(user.id);
 
     delete user.password;
@@ -81,12 +83,12 @@ export class AuthenticationController {
   ) {
     await this.authenticationService.rePassword(request.user, rePassword);
   }
-  @UseGuards(JwtAuthenticationGuard)
+
   @Post('forgotPassword')
-  async forgotPassword(@Req() request: RequestWithUser) {
+  async forgotPassword(@Body() email: EmailRePassWordDto,) {
     const pass = Math.floor(Math.random() * 10000000);
     const passs = String(pass);
-    await this.authenticationService.forgotPassword(request.user, {
+    await this.authenticationService.forgotPassword(email, {
       password: passs,
     });
 

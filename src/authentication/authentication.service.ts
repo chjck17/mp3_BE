@@ -12,6 +12,7 @@ import RePassWordDto from './dto/repassword.dto';
 import EmailService from 'src/email/email.service';
 import User from 'src/users/user.entity';
 import EditProfileDto from 'src/users/dto/editProfile.dto';
+import EmailRePassWordDto from './dto/emailForgetPassWord.dto';
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -96,18 +97,18 @@ export class AuthenticationService {
     }
   }
 
-  public async forgotPassword(user:User,pass: RePassWordDto) {
-    const users = this.usersService.getByEmail(user.email)
-    console.log(users);
+  public async forgotPassword(email: EmailRePassWordDto,pass: RePassWordDto) {
+
       const text = pass.password;
           await this.emailService.sendMail({
-            to: user.email,
+            to: email.email,
             subject: 'Email confirmation',
             text,
           })
     const hashedPassword = await bcrypt.hash(pass.password, 10);
     try {
-      const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
+      const userForget= await this.usersService.getByEmail(email.email)
+      const createdUser = await this.usersService.rePassWord(userForget.id,{password :hashedPassword })
       // createdUser.password = undefined;
       return createdUser;
     } catch (error) {
