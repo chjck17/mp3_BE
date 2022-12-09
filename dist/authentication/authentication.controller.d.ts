@@ -7,6 +7,7 @@ import { EmailConfirmationService } from 'src/emailConfirmation/emailConfirmatio
 import RePassWordDto from './dto/repassword.dto';
 import EditProfileDto from 'src/users/dto/editProfile.dto';
 import { UsersService } from 'src/users/users.service';
+import EmailRePassWordDto from './dto/emailForgetPassWord.dto';
 export declare class AuthenticationController {
     private readonly authenticationService;
     private readonly configService;
@@ -18,7 +19,7 @@ export declare class AuthenticationController {
     logOut(response: Response): Promise<Response<any, Record<string, any>>>;
     authenticate(request: RequestWithUser): import("../users/user.entity").default;
     rePassword(request: RequestWithUser, rePassword: RePassWordDto): Promise<void>;
-    forgotPassword(request: RequestWithUser): Promise<void>;
+    forgotPassword(email: EmailRePassWordDto): Promise<void>;
     editProfile(request: RequestWithUser, profile: EditProfileDto): Promise<{
         sex: string;
         dateOfBirth: Date;

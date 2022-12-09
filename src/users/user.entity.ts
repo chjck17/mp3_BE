@@ -64,7 +64,7 @@ class User {
   @Exclude()
   public currentHashedRefreshToken?: string;
 
-  @Column({ nullable: true })
+  @Column( { nullable: true } )
   public sex: string;
 
   @Column({ nullable: true })
