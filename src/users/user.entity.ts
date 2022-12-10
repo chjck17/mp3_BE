@@ -63,13 +63,13 @@ class User {
   })
   @Exclude()
   public currentHashedRefreshToken?: string;
-  // @Column()
-  // public stripeCustomerId: string;
 
   @Column( { nullable: true } )
   public sex: string;
+
   @Column({ nullable: true })
   public dateOfBirth: Date;
+
   @Column({ nullable: true })
   public country: string;
 }

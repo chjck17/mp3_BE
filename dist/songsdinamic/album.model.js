@@ -5,6 +5,7 @@ class AlbumModel {
         this.id = albumData.id;
         this.name = albumData.name;
         this.description = albumData.description;
+        this.image = albumData.image;
     }
 }
 exports.default = AlbumModel;
