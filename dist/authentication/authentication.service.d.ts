@@ -22,6 +22,6 @@ export declare class AuthenticationService {
         cookie: string;
         token: string;
     };
-    forgotPassword(email: EmailRePassWordDto, pass: RePassWordDto): Promise<import("typeorm").UpdateResult>;
+    forgotPassword(email: EmailRePassWordDto, pass: string): Promise<import("typeorm").UpdateResult>;
     rePassword(user: User, pass: RePassWordDto): Promise<import("typeorm").UpdateResult>;
 }

@@ -56,7 +56,7 @@ export class AuthenticationService {
     return `Authentication=; HttpOnly; Path=/; Max-Age=0;`;
   }
 
-  public async getAuthenticatedUser(email: string, plainTextPassword: string) {
+  public async getAuthenticatedUser(email: string,   plainTextPassword: string) {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
@@ -97,15 +97,15 @@ export class AuthenticationService {
     }
   }
 
-  public async forgotPassword(email: EmailRePassWordDto,pass: RePassWordDto) {
+  public async forgotPassword(email: EmailRePassWordDto,pass: string) {
 
-      const text = pass.password;
+    const text = pass;
           await this.emailService.sendMail({
             to: email.email,
             subject: 'Email confirmation',
             text,
           })
-    const hashedPassword = await bcrypt.hash(pass.password, 10);
+    const hashedPassword = await bcrypt.hash(pass, 10);
     try {
       const userForget= await this.usersService.getByEmail(email.email)
       const createdUser = await this.usersService.rePassWord(userForget.id,{password :hashedPassword })
@@ -120,16 +120,31 @@ export class AuthenticationService {
   }
 
   public async rePassword(user:User,pass: RePassWordDto) {
-    const hashedPassword = await bcrypt.hash(pass.password, 10);
+
+
+        const isPasswordMatching = await bcrypt.compare(
+      pass.congirmationPassword,
+      user.password
+    );
+    // const confirmPassword = await bcrypt.hash(pass.congirmationPassword, 10);
+    // const confirmPasswords = await bcrypt.hash(pass.congirmationPassword, 10);
+     const hashedPassword = await bcrypt.hash(pass.password, 10);
+//  return await this.verifyPassword(pass.congirmationPassword, user.password);
+    if(isPasswordMatching){
     try {
       const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
       // createdUser.password = undefined;
+      
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
       }
       throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    }
+    else{
+       throw new HttpException('wrong congirmation password', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

@@ -23,8 +23,6 @@ const emailConfirmation_service_1 = require("../emailConfirmation/emailConfirmat
 const repassword_dto_1 = require("./dto/repassword.dto");
 const editProfile_dto_1 = require("../users/dto/editProfile.dto");
 const users_service_1 = require("../users/users.service");
-const editProfile_dto_1 = require("../users/dto/editProfile.dto");
-const users_service_1 = require("../users/users.service");
 const emailForgetPassWord_dto_1 = require("./dto/emailForgetPassWord.dto");
 let AuthenticationController = class AuthenticationController {
     constructor(authenticationService, configService, emailConfirmationService, usersService) {
@@ -63,16 +61,7 @@ let AuthenticationController = class AuthenticationController {
     async forgotPassword(email) {
         const pass = Math.floor(Math.random() * 10000000);
         const passs = String(pass);
-        await this.authenticationService.forgotPassword(request.user, {
-            password: passs,
-        });
-    }
-    async editProfile(request, profile) {
-        const duy = await this.usersService.editProfile(request.user.id, profile);
-        return duy;
-        await this.authenticationService.forgotPassword(email, {
-            password: passs,
-        });
+        await this.authenticationService.forgotPassword(email, passs);
     }
     async editProfile(request, profile) {
         const duy = await this.usersService.editProfile(request.user.id, profile);

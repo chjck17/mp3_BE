@@ -8,6 +8,7 @@ export class RePassWordDto {
   @MaxLength(32)
   @MinLength(7)
   password: string;
+  congirmationPassword: string;
 }
 
 export default RePassWordDto;

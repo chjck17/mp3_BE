@@ -75,22 +75,22 @@ export class AuthenticationController {
     // user.password = undefined;
     return user;
   }
+
+
   @UseGuards(JwtAuthenticationGuard)
   @Post('rePassword')
   async rePassword(
     @Req() request: RequestWithUser,
     @Body() rePassword: RePassWordDto,
   ) {
-    await this.authenticationService.rePassword(request.user, rePassword);
+     await this.authenticationService.rePassword(request.user, rePassword);
   }
 
   @Post('forgotPassword')
   async forgotPassword(@Body() email: EmailRePassWordDto,) {
     const pass = Math.floor(Math.random() * 10000000);
     const passs = String(pass);
-    await this.authenticationService.forgotPassword(email, {
-      password: passs,
-    });
+    await this.authenticationService.forgotPassword(email,  passs,);
 
     // const { user } = request;
     // const token = this.authenticationService.getCookieWithJwtToken(user.id);
