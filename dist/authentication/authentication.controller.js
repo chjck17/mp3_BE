@@ -61,9 +61,7 @@ let AuthenticationController = class AuthenticationController {
     async forgotPassword(email) {
         const pass = Math.floor(Math.random() * 10000000);
         const passs = String(pass);
-        await this.authenticationService.forgotPassword(email, {
-            password: passs,
-        });
+        await this.authenticationService.forgotPassword(email, passs);
     }
     async editProfile(request, profile) {
         const duy = await this.usersService.editProfile(request.user.id, profile);

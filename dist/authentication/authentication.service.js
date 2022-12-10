@@ -87,13 +87,13 @@ let AuthenticationService = class AuthenticationService {
         };
     }
     async forgotPassword(email, pass) {
-        const text = pass.password;
+        const text = pass;
         await this.emailService.sendMail({
             to: email.email,
             subject: 'Email confirmation',
             text,
         });
-        const hashedPassword = await bcrypt.hash(pass.password, 10);
+        const hashedPassword = await bcrypt.hash(pass, 10);
         try {
             const userForget = await this.usersService.getByEmail(email.email);
             const createdUser = await this.usersService.rePassWord(userForget.id, { password: hashedPassword });
@@ -107,16 +107,22 @@ let AuthenticationService = class AuthenticationService {
         }
     }
     async rePassword(user, pass) {
+        const isPasswordMatching = await bcrypt.compare(pass.congirmationPassword, user.password);
         const hashedPassword = await bcrypt.hash(pass.password, 10);
-        try {
-            const createdUser = await this.usersService.rePassWord(user.id, { password: hashedPassword });
-            return createdUser;
-        }
-        catch (error) {
-            if ((error === null || error === void 0 ? void 0 : error.code) === postgresErrorCode_enum_1.default.UniqueViolation) {
-                throw new common_1.HttpException('User with that email already exists', common_1.HttpStatus.BAD_REQUEST);
+        if (isPasswordMatching) {
+            try {
+                const createdUser = await this.usersService.rePassWord(user.id, { password: hashedPassword });
+                return createdUser;
             }
-            throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            catch (error) {
+                if ((error === null || error === void 0 ? void 0 : error.code) === postgresErrorCode_enum_1.default.UniqueViolation) {
+                    throw new common_1.HttpException('User with that email already exists', common_1.HttpStatus.BAD_REQUEST);
+                }
+                throw new common_1.HttpException('Something went wrong', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else {
+            throw new common_1.HttpException('wrong congirmation password', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 };
