@@ -91,24 +91,11 @@ export class AuthenticationController {
     const pass = Math.floor(Math.random() * 10000000);
     const passs = String(pass);
     await this.authenticationService.forgotPassword(email,  passs,);
-
-    // const { user } = request;
-    // const token = this.authenticationService.getCookieWithJwtToken(user.id);
-
-    // delete user.password;
-
-    //  response.setHeader('Set-Cookie', `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`);
-    //   return response.send({
-    //   user,
-    //   token: token,
-    //   message: 'Login account success',
-    // });
   }
 
   @UseGuards(JwtAuthenticationGuard)
   @Post('editProfile')
   async editProfile(@Req() request: RequestWithUser,@Body() profile: EditProfileDto) {
-    //  await this.authenticationService.forgotPassword(request.user,{password:passs})
       const duy=  await this.usersService.editProfile(request.user.id, profile);
       return duy
   }

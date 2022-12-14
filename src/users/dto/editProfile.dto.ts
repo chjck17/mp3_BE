@@ -1,9 +1,9 @@
-
 export class EditProfileDto {
   email: string;
+  name: string;
   sex: string;
   dateOfBirth: Date;
- country:string ;
+  country: string;
 }
 
 export default EditProfileDto;

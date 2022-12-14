@@ -19,134 +19,163 @@ export class AuthenticationService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-       private readonly emailService: EmailService,
+    private readonly emailService: EmailService,
   ) {}
 
   public async register(registrationData: RegisterDto) {
-   const recentlySong =new RecentlySong
-   recentlySong.listSong=[]
+    const recentlySong = new RecentlySong();
+    recentlySong.listSong = [];
 
-   const favoriteSong =new FavoriteSong
-   favoriteSong.listSong=[]
+    const favoriteSong = new FavoriteSong();
+    favoriteSong.listSong = [];
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
-        recentlySongs:recentlySong,
-        favoriteSongs:favoriteSong,
+        recentlySongs: recentlySong,
+        favoriteSongs: favoriteSong,
       });
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'User with that email already exists',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   public getCookieWithJwtToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload);
-    return  token;
+    return token;
   }
 
   public getCookieForLogOut() {
     return `Authentication=; HttpOnly; Path=/; Max-Age=0;`;
   }
 
-  public async getAuthenticatedUser(email: string,   plainTextPassword: string) {
+  public async getAuthenticatedUser(email: string, plainTextPassword: string) {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
       return user;
     } catch (error) {
-      throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
-  private async verifyPassword(plainTextPassword: string, hashedPassword: string) {
+  private async verifyPassword(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ) {
     const isPasswordMatching = await bcrypt.compare(
       plainTextPassword,
-      hashedPassword
+      hashedPassword,
     );
     if (!isPasswordMatching) {
-      throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
-  public getCookieWithJwtAccessToken(userId: string, isSecondFactorAuthenticated = false) {
+  public getCookieWithJwtAccessToken(
+    userId: string,
+    isSecondFactorAuthenticated = false,
+  ) {
     const payload: TokenPayload = { userId, isSecondFactorAuthenticated };
     const token = this.jwtService.sign(payload, {
-      secret: this.configService.get('JWT_SECRET')
+      secret: this.configService.get('JWT_SECRET'),
     });
     //  `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
-    return token ;
+    return token;
   }
 
   public getCookieWithJwtRefreshToken(userId: string) {
     const payload: TokenPayload = { userId };
     const token = this.jwtService.sign(payload, {
-      secret: this.configService.get('JWT_SECRET')
+      secret: this.configService.get('JWT_SECRET'),
     });
-    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
+    const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get(
+      'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+    )}`;
     return {
       cookie,
-      token
-    }
+      token,
+    };
   }
 
-  public async forgotPassword(email: EmailRePassWordDto,pass: string) {
-
+  public async forgotPassword(email: EmailRePassWordDto, pass: string) {
     const text = pass;
-          await this.emailService.sendMail({
-            to: email.email,
-            subject: 'Email confirmation',
-            text,
-          })
+    await this.emailService.sendMail({
+      to: email.email,
+      subject: 'Email confirmation',
+      text,
+    });
     const hashedPassword = await bcrypt.hash(pass, 10);
     try {
-      const userForget= await this.usersService.getByEmail(email.email)
-      const createdUser = await this.usersService.rePassWord(userForget.id,{password :hashedPassword })
+      const userForget = await this.usersService.getByEmail(email.email);
+      const createdUser = await this.usersService.rePassWord(userForget.id, {
+        password: hashedPassword,
+      });
       // createdUser.password = undefined;
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          'User with that email already exists',
+          HttpStatus.BAD_REQUEST,
+        );
       }
-      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
-  public async rePassword(user:User,pass: RePassWordDto) {
-
-
-        const isPasswordMatching = await bcrypt.compare(
+  public async rePassword(user: User, pass: RePassWordDto) {
+    console.log(pass);
+    const isPasswordMatching = await bcrypt.compare(
       pass.congirmationPassword,
-      user.password
+      user.password,
     );
-    // const confirmPassword = await bcrypt.hash(pass.congirmationPassword, 10);
-    // const confirmPasswords = await bcrypt.hash(pass.congirmationPassword, 10);
-     const hashedPassword = await bcrypt.hash(pass.password, 10);
-//  return await this.verifyPassword(pass.congirmationPassword, user.password);
-    if(isPasswordMatching){
-    try {
-      const createdUser = await this.usersService.rePassWord(user.id,{password :hashedPassword })
-      // createdUser.password = undefined;
-      
-      return createdUser;
-    } catch (error) {
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
+    const hashedPassword = await bcrypt.hash(pass.password, 10);
+    if (isPasswordMatching) {
+      try {
+        const createdUser = await this.usersService.rePassWord(user.id, {
+          password: hashedPassword,
+        });
+        return createdUser;
+      } catch (error) {
+        if (error?.code === PostgresErrorCode.UniqueViolation) {
+          throw new HttpException(
+            'User with that email already exists',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+        throw new HttpException(
+          'Something went wrong',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
-      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    }
-    else{
-       throw new HttpException('wrong congirmation password', HttpStatus.INTERNAL_SERVER_ERROR);
+    } else {
+      throw new HttpException(
+        'wrong congirmation password',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
-
-
 }

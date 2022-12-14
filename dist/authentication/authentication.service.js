@@ -27,9 +27,9 @@ let AuthenticationService = class AuthenticationService {
         this.emailService = emailService;
     }
     async register(registrationData) {
-        const recentlySong = new recentlysong_entity_1.default;
+        const recentlySong = new recentlysong_entity_1.default();
         recentlySong.listSong = [];
-        const favoriteSong = new favoritesong_entity_1.default;
+        const favoriteSong = new favoritesong_entity_1.default();
         favoriteSong.listSong = [];
         const hashedPassword = await bcrypt.hash(registrationData.password, 10);
         try {
@@ -71,19 +71,19 @@ let AuthenticationService = class AuthenticationService {
     getCookieWithJwtAccessToken(userId, isSecondFactorAuthenticated = false) {
         const payload = { userId, isSecondFactorAuthenticated };
         const token = this.jwtService.sign(payload, {
-            secret: this.configService.get('JWT_SECRET')
+            secret: this.configService.get('JWT_SECRET'),
         });
         return token;
     }
     getCookieWithJwtRefreshToken(userId) {
         const payload = { userId };
         const token = this.jwtService.sign(payload, {
-            secret: this.configService.get('JWT_SECRET')
+            secret: this.configService.get('JWT_SECRET'),
         });
         const cookie = `Refresh=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
         return {
             cookie,
-            token
+            token,
         };
     }
     async forgotPassword(email, pass) {
@@ -96,7 +96,9 @@ let AuthenticationService = class AuthenticationService {
         const hashedPassword = await bcrypt.hash(pass, 10);
         try {
             const userForget = await this.usersService.getByEmail(email.email);
-            const createdUser = await this.usersService.rePassWord(userForget.id, { password: hashedPassword });
+            const createdUser = await this.usersService.rePassWord(userForget.id, {
+                password: hashedPassword,
+            });
             return createdUser;
         }
         catch (error) {
@@ -107,11 +109,14 @@ let AuthenticationService = class AuthenticationService {
         }
     }
     async rePassword(user, pass) {
+        console.log(pass);
         const isPasswordMatching = await bcrypt.compare(pass.congirmationPassword, user.password);
         const hashedPassword = await bcrypt.hash(pass.password, 10);
         if (isPasswordMatching) {
             try {
-                const createdUser = await this.usersService.rePassWord(user.id, { password: hashedPassword });
+                const createdUser = await this.usersService.rePassWord(user.id, {
+                    password: hashedPassword,
+                });
                 return createdUser;
             }
             catch (error) {
